@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <base target="_blank">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Chakra+Petch&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Chakra Petch', sans-serif;
+            background: rgb(233, 233, 233);
+        }
+    </style>
+    <title>Astronomy Picture of the Day</title>
+</head>
+<body>
+    <div class="container p-3" id="JaPierdoleKurwaMac">
+        <h1 class="display-4 text-center mb-5"><i style="color: rebeccapurple" class="fas fa-rocket"></i> Astronomy <span v-if="apiResult.media_type === 'video'"><del>Picture</del> Video</span><span v-else>Picture</span> of the Day</h1>
+        <h2 class="text-center"><b>{{ apiResult.title }}</b></h2>
+        <h3 class="text-center mb-5"><i class="far fa-calendar-alt"></i> {{ apiResult.date | dateFormat }}</h3>
+
+        <div v-if="apiResult.media_type === 'image'">
+            <a :href="apiResult.hdurl"><img class="img-fluid mx-auto d-block shadow-lg mb-5 bg-white rounded" :src="apiResult.url" :alt="apiResult.title" /></a>
+        </div>
+        <div v-else-if="apiResult.media_type === 'video'" class="embed-responsive shadow-lg embed-responsive-16by9 mb-5">
+            <iframe :src="apiResult.url + '&autoplay=1&controls=0&loop=1&modestbranding=1&iv_load_policy=3&rel=0&showinfo=0'" type="text/html" class="embed-responsive-item" allowfullscreen></iframe>
+        </div>
+
+        <blockquote class="blockquote text-center">
+            <div class="p-3">{{ apiResult.explanation }}</div>
+            <footer v-if="apiResult.copyright" class="blockquote-footer mt-3">{{ apiResult.copyright }}</footer>
+        </blockquote>
+
+        <div class="text-center text-muted mt-5 mb-2">
+            <i class="fas fa-american-sign-language-interpreting"></i> Made with fingers - {{ getYear }}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script>
+        const app = new Vue({
+          el: '#JaPierdoleKurwaMac',
+          data: {
+            apiResult: [],
+            getYear: new Date().getFullYear()
+          },
+          filters: {
+            dateFormat: function (value) {
+              if (value) {
+                return moment(String(value)).format('MMMM Do YYYY');
+              }
+            }
+          },
+          created () {
+            fetch('https://api.nasa.gov/planetary/apod?api_key=NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo')
+              .then(response => response.json())
+              .then(json => this.apiResult = json);
+          }
+        });
+    </script>
+</body>
+</html>
