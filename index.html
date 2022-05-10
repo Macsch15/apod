@@ -16,7 +16,7 @@
     <title>Astronomy Picture of the Day</title>
 </head>
 <body>
-    <div class="container p-3" id="JaPierdoleKurwaMac">
+    <div class="container p-3" id="app">
         <h1 class="display-4 text-center mb-5"><i style="color: rebeccapurple" class="fas fa-rocket"></i> Astronomy <span v-if="apiResult.media_type === 'video'"><del>Picture</del> Video</span><span v-else>Picture</span> of the Day</h1>
         <h2 class="text-center"><b>{{ apiResult.title }}</b></h2>
         <h3 class="text-center mb-5"><i class="far fa-calendar-alt"></i> {{ apiResult.date | dateFormat }}</h3>
@@ -42,7 +42,7 @@
     <script src="https://momentjs.com/downloads/moment.js"></script>
     <script>
         const app = new Vue({
-          el: '#JaPierdoleKurwaMac',
+          el: '#app',
           data: {
             apiResult: [],
             getYear: new Date().getFullYear()
